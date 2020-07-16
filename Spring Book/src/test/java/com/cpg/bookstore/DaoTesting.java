@@ -28,4 +28,8 @@ public class DaoTesting {
 		bookInfo.setTitle("Science");
 		Mockito.when(bookInfoDao.updateBookInfo(bookInfo)).thenReturn(true);
 	}
+	@Test
+	public void daoBookTesting()throws Exception {
+		Mockito.when(bookInfoDao.updateBookInfo(null)).thenReturn(false);
+	}
 }

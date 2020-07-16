@@ -36,5 +36,9 @@ public class ServiceTesting {
 		bookInfo.setTitle("Science");
 		Mockito.when(bookInfoDao.updateBookInfo(bookInfo)).thenReturn(true);
 		assertThat(bookInfoServiceTest.updateBookInfo(bookInfo)).isEqualTo(true);
-}
+	}
+	@Test
+	public void daoBookTesting()throws Exception {
+		assertThat(bookInfoServiceTest.updateBookInfo(null)).isEqualTo(false);
+	}
 }
