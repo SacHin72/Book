@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cpg.bookstore.dao.BookInformationDaoImpl;
 import com.cpg.bookstore.entities.BookInformation;
+import com.cpg.bookstore.exception.BookException;
 
 @Transactional
 @Service
@@ -14,14 +15,11 @@ public class BookInformationServiceImpl implements BookInformationService{
 	@Autowired
 	private BookInformationDaoImpl bookInfoDao;
 	
-	public boolean updateBookInfo(BookInformation bookInfo) {
+	public String updateBookInfo(BookInformation bookInfo) throws BookException{
 		// TODO Auto-generated method stub
 		if(bookInfoDao.updateBookInfo(bookInfo)) {
-			return true;
+			return "Book Updated Successfully";
 		}
-		else {
-			return false;
-		}
+		throw new BookException("ERROR!!!... Book Not Updated!");
 	}
-
 }

@@ -1,7 +1,8 @@
 package com.cpg.bookstore.service;
 
 import com.cpg.bookstore.entities.BookInformation;
+import com.cpg.bookstore.exception.BookException;
 
 public interface BookInformationService{
-	boolean updateBookInfo(BookInformation bookInfo);
+	String updateBookInfo(BookInformation bookInfo) throws BookException;
 }

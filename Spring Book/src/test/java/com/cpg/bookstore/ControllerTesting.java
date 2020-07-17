@@ -7,13 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.cpg.bookstore.controller.MyController;
-import com.cpg.bookstore.dao.BookInformationDaoImpl;
-import com.cpg.bookstore.entities.BookInformation;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ControllerTesting{
