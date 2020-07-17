@@ -1,9 +1,10 @@
 package com.cg.bookStore.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,9 @@ public class BookStoreDaoImpl implements BookStoreDao {
 
 	@PersistenceContext
 	private EntityManager em;
-
+	
+	LocalDateTime dateTime=LocalDateTime.now();
+	
 	@Override
 	public boolean createCategory(BookCategory category){
 		em.persist(category);
@@ -54,8 +57,20 @@ public class BookStoreDaoImpl implements BookStoreDao {
 	@Override
 	public boolean updateBook(BookInformation book) {
 		// TODO Auto-generated method stub
-		em.merge(book);
-		return true;
+		String str="update BookInformation bookInfo set bookInfo.title=:title,bookInfo.author=:author,"
+				+ "bookInfo.description=:description,bookInfo.isbnNumber=:isbnNumber,bookInfo.publishDate=:publishDate,"
+				+ "bookInfo.lastUpdateTime=:lastUpdateTime,bookInfo.price=:price where bookInfo.bookId=:id";
+		Query query=em.createQuery(str);
+		query.setParameter("title", book.getTitle());
+		query.setParameter("author", book.getAuthor());
+		query.setParameter("description", book.getDescription());
+		query.setParameter("isbnNumber", book.getIsbnNumber());
+		query.setParameter("publishDate", null);
+		query.setParameter("lastUpdateTime",null);
+		query.setParameter("price", book.getPrice());
+		query.setParameter("id", book.getBookId());
+		query.executeUpdate();
+		return true;	
 	}
 
 	@Override
