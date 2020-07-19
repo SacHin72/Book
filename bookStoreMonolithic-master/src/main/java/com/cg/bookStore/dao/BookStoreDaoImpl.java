@@ -54,6 +54,15 @@ public class BookStoreDaoImpl implements BookStoreDao {
 		return true;
 	}
 
+	/*******************************************
+	 * Method: UpdateBook
+	 *Description: To update book details like book title,Author name, publish Date, price etc.
+	 * @param name              - input of Object of type BookInformation
+	 * @returns       - 		true if information updated
+	 * @throws Booking exception - if number of tickets is less than required tickets 
+	            *Created By                              - Sachin kumar
+	            *Created Date                            - 16-July-2020                           	 
+	 ********************************************/
 	@Override
 	public boolean updateBook(BookInformation book) {
 		// TODO Auto-generated method stub
@@ -84,5 +93,13 @@ public class BookStoreDaoImpl implements BookStoreDao {
 	    	return false;
 	    }
 	    return true;
+	}
+	
+	@Override
+	public List<BookInformation> listAllBooks() {
+		String Qstr="SELECT bookInformation FROM BookInformation bookInformation";
+		TypedQuery<BookInformation> query=em.createQuery(Qstr,BookInformation.class);
+		List<BookInformation> listAllBooks=query.getResultList();
+		return listAllBooks;
 	}
 }

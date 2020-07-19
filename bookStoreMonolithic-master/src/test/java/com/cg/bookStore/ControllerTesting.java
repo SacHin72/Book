@@ -1,40 +1,52 @@
 package com.cg.bookStore;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.junit.Before;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.http.MediaType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import com.cg.bookStore.entities.BookInformation;
+import com.cg.bookStore.service.ManageBookService;
 import com.cg.bookStore.web.ManageBookController;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
+@WebMvcTest(value = ManageBookController.class)
 public class ControllerTesting{
-
-	@InjectMocks
-	private ManageBookController controller;
-	
+	@Autowired
 	private MockMvc mockMvc;
 	
-	@Before
-	public void setup() throws Exception {
-		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-	}
+	@MockBean
+	private ManageBookService service;
 	
 	@Test
-	public void demoTest() throws Exception
-	{
-		mockMvc.perform(post("manageBook/update"))
-		.andExpect(status().isFound())
-		.andExpect(content().string("Details Updated"));
-	
-	
+	public void testUpdateBook() throws Exception {
+		String categoryJson = "{\"bookId\":1,\"title\":\"hindi\",\"author\":\"Sachin\",\"description\":\"12th science\",\"isbnNumber\":\"1237894561232\",\"publishDate\":null,\"lastUpdateTime\":null,\"price\":100}";
+		String expectedResult="Book Updated Successfully";
+		Mockito.when(
+				service.updateBook(Mockito.any(BookInformation.class))).thenReturn(expectedResult);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/manageCategory/update").accept(MediaType.APPLICATION_JSON).content(categoryJson).contentType(MediaType.APPLICATION_JSON);
+		
+		mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.content()
+                .string("Book Updated Successfully")).andDo(MockMvcResultHandlers.print());
 	}
-	
+	@Test
+	public void testUpdateBookNull() throws Exception {
+		String categoryJson = "{}";
+		String expectedResult="ERROR!!!... Book Not Updated!";
+		Mockito.when(
+				service.updateBook(Mockito.any(BookInformation.class))).thenReturn(expectedResult);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/manageCategory/update").accept(MediaType.APPLICATION_JSON).content(categoryJson).contentType(MediaType.APPLICATION_JSON);
+		
+		mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.content()
+                .string("ERROR!!!... Book Not Updated!")).andDo(MockMvcResultHandlers.print());
+	}
 }
 

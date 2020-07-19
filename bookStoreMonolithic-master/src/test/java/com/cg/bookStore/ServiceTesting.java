@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +24,8 @@ public class ServiceTesting {
 	@MockBean
 	BookStoreDaoImpl bookDaoTest;
 	
+	@Mock
+	BookInformation bookInfo;
 	
 	@Test
 	public void daoTesting()throws Exception {
@@ -39,7 +42,7 @@ public class ServiceTesting {
 	}
 	@Test
 	public void daoBookTesting()throws Exception {
-		assertThat(bookServiceTest.updateBook(null)).isEqualTo("ERROR!!!... Book Not Updated!");
+		assertThat(bookServiceTest.updateBook(bookInfo)).isEqualTo("ERROR!!!... Book Not Updated!");
 	}
 }
 
