@@ -1,22 +1,32 @@
+
 package com.cg.bookStore;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cg.bookStore.dao.BookStoreDaoImpl;
 import com.cg.bookStore.entities.BookInformation;
+import com.cg.bookStore.service.ManageBookServiceImpl;
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
-public class DaoTesting {
+@SpringBootTest
+public class UpdateBookServiceTest {
+	@Autowired
+	ManageBookServiceImpl bookServiceTest;
 	
 	@MockBean
-	BookStoreDaoImpl bookDao;
+	BookStoreDaoImpl bookDaoTest;
 	
+	@Mock
+	BookInformation bookInfo;
 	
 	@Test
 	public void daoTesting()throws Exception {
@@ -28,11 +38,12 @@ public class DaoTesting {
 		bookInfo.setLastUpdateTime(null);
 		bookInfo.setPublishDate(null);
 		bookInfo.setTitle("Science");
-		Mockito.when(bookDao.updateBook(bookInfo)).thenReturn(true);
+		Mockito.when(bookDaoTest.updateBookInfo(bookInfo)).thenReturn(true);
+		assertThat(bookServiceTest.updateBook(bookInfo)).isEqualTo("book updated");
 	}
 	@Test
 	public void daoBookTesting()throws Exception {
-		Mockito.when(bookDao.updateBook(null)).thenReturn(false);
+		assertThat(bookServiceTest.updateBook(bookInfo)).isEqualTo("Some error occured, try again");
 	}
 }
 

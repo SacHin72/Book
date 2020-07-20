@@ -1,8 +1,9 @@
 package com.cg.bookStore.dao;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -16,21 +17,41 @@ import com.cg.bookStore.entities.BookInformation;
 public class BookStoreDaoImpl implements BookStoreDao {
 
 	@PersistenceContext
-	private EntityManager em;
-	
-	LocalDateTime dateTime=LocalDateTime.now();
-	
+	private EntityManager entitiManager;
+
 	@Override
 	public boolean createCategory(BookCategory category){
-		em.persist(category);
+		entitiManager.persist(category);
 		return true;
 	}
 	
-	public boolean findCategory(String categoryName) {
+	public boolean categoryExists(String categoryName) {
 		String jpql = "from BookCategory b where b.categoryName=:cName";
-		TypedQuery<BookCategory> query = em.createQuery(jpql, BookCategory.class);
+		TypedQuery<BookCategory> query = entitiManager.createQuery(jpql, BookCategory.class);
 		query.setParameter("cName",categoryName);
 	    List<BookCategory> existingCat = query.getResultList();
+	    if(existingCat.isEmpty()) {
+	    	return false;
+	    }
+	    return true;
+	}
+	
+	public boolean categoryExists(int categoryId) {
+		String jpql = "from BookCategory b where b.categoryId=:cId";
+		TypedQuery<BookCategory> query = entitiManager.createQuery(jpql, BookCategory.class);
+		query.setParameter("cId",categoryId);
+	    List<BookCategory> existingCat = query.getResultList();
+	    if(existingCat.isEmpty()) {
+	    	return false;
+	    }
+	    return true;
+	}
+	
+	public boolean bookExists(int bookId) {
+		String jpql = "from BookInformation b where b.bookId=:bId";
+		TypedQuery<BookInformation> query = entitiManager.createQuery(jpql, BookInformation.class);
+		query.setParameter("bId",bookId);
+	    List<BookInformation> existingCat = query.getResultList();
 	    if(existingCat.isEmpty()) {
 	    	return false;
 	    }
@@ -39,19 +60,23 @@ public class BookStoreDaoImpl implements BookStoreDao {
 
 	@Override
 	public boolean deleteBook(int bookId) {
-		BookInformation book = em.find(BookInformation.class, bookId);
-		if(book!=null) {
-			em.remove(book);
-			return true;
-		}
-		return false;
+		BookInformation book = entitiManager.find(BookInformation.class,bookId);
+		entitiManager.remove(book);
+		return true;
 	}
 	
 
 	@Override
 	public boolean addBook(BookInformation bookInfo) {
-		em.persist(bookInfo);
+		entitiManager.persist(bookInfo);
 		return true;
+	}
+	
+	public List<BookInformation> listAllBooks() {
+		String Qstr="SELECT bookInformation FROM BookInformation bookInformation";
+		TypedQuery<BookInformation> query=entitiManager.createQuery(Qstr,BookInformation.class);
+		List<BookInformation> listAllBooks=query.getResultList();
+		return listAllBooks;
 	}
 
 	/*******************************************
@@ -64,12 +89,12 @@ public class BookStoreDaoImpl implements BookStoreDao {
 	            *Created Date                            - 16-July-2020                           	 
 	 ********************************************/
 	@Override
-	public boolean updateBook(BookInformation book) {
+	public boolean updateBookInfo(BookInformation book) {
 		// TODO Auto-generated method stub
 		String str="update BookInformation bookInfo set bookInfo.title=:title,bookInfo.author=:author,"
 				+ "bookInfo.description=:description,bookInfo.isbnNumber=:isbnNumber,bookInfo.publishDate=:publishDate,"
 				+ "bookInfo.lastUpdateTime=:lastUpdateTime,bookInfo.price=:price where bookInfo.bookId=:id";
-		Query query=em.createQuery(str);
+		Query query=entitiManager.createQuery(str);
 		query.setParameter("title", book.getTitle());
 		query.setParameter("author", book.getAuthor());
 		query.setParameter("description", book.getDescription());
@@ -83,10 +108,32 @@ public class BookStoreDaoImpl implements BookStoreDao {
 	}
 
 	@Override
-	public boolean findBook(String bookName) {
-		// TODO Auto-generated method stub
+	public boolean updateCategory(BookCategory category) {
+		String str="SELECT category FROM BookCategory category WHERE category.categoryName=:newCategoryName";
+		TypedQuery<BookCategory> query=entitiManager.createQuery(str,BookCategory.class);
+		query.setParameter("newCategoryName", category.getCategoryName());
+		try {
+			query.getSingleResult();
+		}catch(NoResultException e) {
+			String str2="update BookCategory category set category.categoryName=:newCategoryName where category.categoryId=:id";
+			Query query2=entitiManager.createQuery(str2);
+			query2.setParameter("newCategoryName", category.getCategoryName());
+			query2.setParameter("id", category.getCategoryId());
+			query2.executeUpdate();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean deleteCategory(int categoryId) {
+			BookCategory category = entitiManager.find(BookCategory.class,categoryId);
+			entitiManager.remove(category);
+			return true;
+	}
+	
+	public boolean bookExists(String bookName) {
 		String jpql = "from BookInformation b where b.title=:cName";
-		TypedQuery<BookInformation> query = em.createQuery(jpql, BookInformation.class);
+		TypedQuery<BookInformation> query = entitiManager.createQuery(jpql, BookInformation.class);
 		query.setParameter("cName",bookName);
 	    List<BookInformation> existingCat = query.getResultList();
 	    if(existingCat.isEmpty()) {
@@ -94,12 +141,5 @@ public class BookStoreDaoImpl implements BookStoreDao {
 	    }
 	    return true;
 	}
-	
-	@Override
-	public List<BookInformation> listAllBooks() {
-		String Qstr="SELECT bookInformation FROM BookInformation bookInformation";
-		TypedQuery<BookInformation> query=em.createQuery(Qstr,BookInformation.class);
-		List<BookInformation> listAllBooks=query.getResultList();
-		return listAllBooks;
-	}
+
 }

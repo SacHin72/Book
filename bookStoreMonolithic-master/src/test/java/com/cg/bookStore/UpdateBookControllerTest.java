@@ -1,3 +1,4 @@
+
 package com.cg.bookStore;
 
 import org.springframework.test.context.junit4.SpringRunner;
@@ -19,7 +20,7 @@ import com.cg.bookStore.web.ManageBookController;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = ManageBookController.class)
-public class ControllerTesting{
+public class UpdateBookControllerTest{
 	@Autowired
 	private MockMvc mockMvc;
 	
@@ -29,24 +30,25 @@ public class ControllerTesting{
 	@Test
 	public void testUpdateBook() throws Exception {
 		String categoryJson = "{\"bookId\":1,\"title\":\"hindi\",\"author\":\"Sachin\",\"description\":\"12th science\",\"isbnNumber\":\"1237894561232\",\"publishDate\":null,\"lastUpdateTime\":null,\"price\":100}";
-		String expectedResult="Book Updated Successfully";
+		String expectedResult="book updated";
 		Mockito.when(
 				service.updateBook(Mockito.any(BookInformation.class))).thenReturn(expectedResult);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/manageCategory/update").accept(MediaType.APPLICATION_JSON).content(categoryJson).contentType(MediaType.APPLICATION_JSON);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/manageBook/update").accept(MediaType.APPLICATION_JSON)
+				.content(categoryJson).contentType(MediaType.APPLICATION_JSON);
 		
 		mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.content()
-                .string("Book Updated Successfully")).andDo(MockMvcResultHandlers.print());
+                .string("book updated")).andDo(MockMvcResultHandlers.print());
 	}
 	@Test
 	public void testUpdateBookNull() throws Exception {
 		String categoryJson = "{}";
-		String expectedResult="ERROR!!!... Book Not Updated!";
+		String expectedResult="Some error occured, try again";
 		Mockito.when(
 				service.updateBook(Mockito.any(BookInformation.class))).thenReturn(expectedResult);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/manageCategory/update").accept(MediaType.APPLICATION_JSON).content(categoryJson).contentType(MediaType.APPLICATION_JSON);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/manageBook/update").accept(MediaType.APPLICATION_JSON)
+				.content(categoryJson).contentType(MediaType.APPLICATION_JSON);
 		
 		mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.content()
-                .string("ERROR!!!... Book Not Updated!")).andDo(MockMvcResultHandlers.print());
+                .string("Some error occured, try again")).andDo(MockMvcResultHandlers.print());
 	}
 }
-
