@@ -1,33 +1,166 @@
-<section class="col-md-10 mx-auto mt-4">
-    <form #frm="ngForm" (ngSubmit)="updateBook(book)">
-    <div class="mt-3"></div>
-    <div><input type="number" min=1 oninput="validity.valid||(value='')" pattern="(?=.*[0-9]).{1,3}"
-        name="Book Id" [(ngModel)]="book.bookId" class="form-control" #Name="ngModel"
-          required placeholder="Enter Book Id"/>
+<div class="row justify-content-center jumbotron" style="padding: unset;">
+  <span class="btn btn-primary" style="width: 100%;" routerLink="/displayBook" role="button">Back</span>     
+</div>
+
+<div class="row justify-content-center jumbotron">
+  <form name="updateCategory" #updateCategory="ngForm" (ngSubmit)=updateBook(newBook)>
+    <div style="text-align: center;margin-bottom: 25px;"> 
+      <h3>Update Book Information</h3>
     </div>
-    <div class="alert alert-dark mt-3" *ngIf="Name.invalid && (Name.touched || Name.dirty)">Book Id is
-        required and length should be less then 3.
+
+    <table>
+      <tr>
+        <td>Title: </td>
+        <td>
+          <label  class="form-control">{{book.title}}</label>
+        </td>
+      </tr>
+      <tr>
+        <td>Price: </td>
+        <td>
+          <label class="form-control">{{book.price}}</label>
+        </td>
+      </tr>
+      <tr>
+        <td>Author: </td>
+        <td>
+          <label class="form-control">{{book.author}}</label>
+        </td>
+      </tr>
+      <tr>
+        <td>Description: </td>
+        <td>
+          <label class="form-control">{{book.description}}</label>
+        </td>
+      </tr>
+      <tr>
+        <td>Isbn Number: </td>
+        <td>
+          <label class="form-control">{{book.isbnNumber}}</label>
+        </td>
+      </tr>
+      <tr>
+        <td>Publish Date: </td>
+        <td>
+          <label class="form-control">{{book.publishDate}}</label>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td>Book Id: </td>
+        <td>
+          <input type="number" placeholder="" id="BookId" name="BookId" 
+          required [(ngModel)]="newBook.bookId" class="form-control" #Name="ngModel" >
+        </td>
+      </tr>
+      <div>
+        <div *ngIf="Name.invalid && (Name.dirty || Name.touched)">
+          <div *ngIf="Name.errors.required" style="color: red;">Please Enter Book Id</div>
+        </div>
+      </div>
+
+      <tr>
+        <td>New Title: </td>
+        <td>
+          <input type="text" placeholder="" id="newTitle" name="newTitle" 
+          required [(ngModel)]="newBook.title" class="form-control" #Name="ngModel" >
+        </td>
+      </tr>
+      <div>
+        <div *ngIf="Name.invalid && (Name.dirty || Name.touched)">
+          <div *ngIf="Name.errors.required" style="color: red;">Please Enter New Title Name</div>
+        </div>
+      </div>
+
+      <tr>
+        <td>New Price: </td>
+        <td>
+          <input type="number" placeholder="" id="newPrice" name="newPrice" 
+          required [(ngModel)]="newBook.price" class="form-control" #Name="ngModel" >
+        </td>
+      </tr>
+      <div>
+        <div *ngIf="Name.invalid && (Name.dirty || Name.touched)">
+          <div *ngIf="Name.errors.required" style="color: red;">Please Enter New Price</div>
+        </div>
+      </div>
+
+      <tr>
+        <td>New Author Name: </td>
+        <td>
+          <input type="text" placeholder="" id="newAuthor" name="newAuthor" 
+          required [(ngModel)]="newBook.author" class="form-control" #Name="ngModel" >
+        </td>
+      </tr>
+      <div>
+        <div *ngIf="Name.invalid && (Name.dirty || Name.touched)">
+          <div *ngIf="Name.errors.required" style="color: red;">Please Enter New Author Name</div>
+        </div>
+      </div>
+
+      <tr>
+        <td>New Description: </td>
+        <td>
+          <input type="text" placeholder="" id="newDescription" name="newDescription" 
+          required [(ngModel)]="newBook.description" class="form-control" #Name="ngModel" maxlength="2000" autofocus minlength="200">
+        </td>
+      </tr>
+      <div>
+        <div *ngIf="Name.invalid && (Name.dirty || Name.touched)">
+          <div *ngIf="Name.errors.required" style="color: red;">Please Enter New Description</div>
+          <div *ngIf="Name.errors.minlength" style="color: red;">Description Should be minimum 200 characters</div>
+          <div *ngIf="Name.errors.maxlength" style="color: red;">Description should be maximum 2000 characters</div>
+        </div>
+      </div>
+
+      <tr>
+        <td>New Isbn Number: </td>
+        <td>
+          <input type="text" placeholder="" id="newIsbnNumber" name="newIsbnNumber" 
+          required [(ngModel)]="newBook.isbnNumber" class="form-control" #Name="ngModel" maxlength="20" autofocus minlength="10">
+        </td>
+      </tr>
+      <div>
+        <div *ngIf="Name.invalid && (Name.dirty || Name.touched)">
+          <div *ngIf="Name.errors.required" style="color: red;">Please Enter New IsbnNumber</div>
+          <div *ngIf="Name.errors.minlength" style="color: red;">Isbn Number Should be minimum 10 characters</div>
+          <div *ngIf="Name.errors.maxlength" style="color: red;">Isbn Number should be maximum 20 characters</div>
+        </div>
+      </div>
+
+      <tr>
+        <td>New Publish Date: </td>
+        <td>
+          <input type="date" placeholder="" id="newPublishDate" name="newPublishDate" 
+          required [(ngModel)]="newBook.publishDate" class="form-control" #Name="ngModel">
+        </td>
+      </tr>
+      <div>
+        <div *ngIf="Name.invalid && (Name.dirty || Name.touched)">
+          <div *ngIf="Name.errors.required" style="color: red;">Please Enter New Publish Date</div>
+        </div>
+      </div>
+
+    </table>
+
+    <div style="margin-top: 50px;">
+      <tr>
+        <td style="text-align: center;">
+          <button class="btn btn-info" [disabled]="!Name.valid" type="submit">save update</button>
+          <button class="btn btn-success" style="margin-left: 35px">cancel</button>
+        </td>
+      </tr>
     </div>
-    <div><input type="text"
-        name="title" [(ngModel)]="book.title" class="form-control" #Name="ngModel"
-          required placeholder="Enter Book Title"/>
-    </div>
-    <div><input type="text"
-        name="title" [(ngModel)]="book.author" class="form-control" #Name="ngModel"
-          required placeholder="Enter Book Author Name"/>
-    </div>
-    <div><input type="text"
-        name="title" [(ngModel)]="book.description" class="form-control" #Name="ngModel"
-          required placeholder="Enter Book Description(Min 200 Words)."/>
-    </div>
-    <div><input type="text"
-        name="title" [(ngModel)]="book.isbnNumber" class="form-control" #Name="ngModel"
-          required placeholder="Enter Isbn Number(Min 10 Words)."/>
-    </div>
-    <div><input type="date"
-        name="title" [(ngModel)]="book.publishDate" class="form-control" #Name="ngModel"
-          required placeholder="Enter Book Publish Date"/>
-    </div>
-    <div class="mt-3"><input type="submit" [disabled]="!frm.valid" class="btn btn-dark"/></div>
-    </form>
- </section> 
+    
+    
+  </form>
+</div>
+
+<div *ngIf="showSuccessMessage" class="text-center">
+  <h2>Success : {{successMessage}}</h2>
+ </div>
+
+ <div *ngIf="showErorrMessage" class="text-center">
+  <h2>Error : {{errorMessage}}</h2>
+ </div>
