@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Router,Route,Routes} from '@angular/router';
+import { BookStoreConstantsService } from './book-store-constants.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +7,6 @@ import {Router,Route,Routes} from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Book';
-  constructor(private router:Router){};
+  title = 'bookStoreTeam2Integrated';
+  loggedIn : boolean ;
 }

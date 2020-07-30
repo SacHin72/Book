@@ -66,6 +66,17 @@ footer{
 {
     float: right;
 }
+#button1{
+    width: 300px;
+    height: 40px;
+}
+#button2{
+    width: 300px;
+    height: 40px;
+}
+#container{
+    text-align: center;
+}
 
 #submit{
     background-color: #313a5a;
@@ -83,4 +94,10 @@ footer{
 }
 b{
     font-size: 120%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

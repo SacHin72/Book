@@ -1,0 +1,34 @@
+<header>
+  <img src="../assets/BookstoreAdminLogo.png" alt="logo">
+<ul>
+  <li><a>Users</a></li>
+  <li><a routerLink="/displayCategory">Categories</a></li>
+  <li><a routerLink="/displayBooks">Books</a></li>
+  <li><a>Customers</a></li>
+  <li><a>Reviews</a></li>
+  <li><a>Orders</a></li>
+</ul>
+</header>
+
+<div class="row justify-content-left " style="padding: unset;">
+  <span class="btn btn-dark" style="width: 10%;" routerLink="/displayCategory" role="button">Back</span>     
+</div>
+
+<main>
+  <div class="modal" *ngIf=showModal>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete Category</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete the Category?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" (click)="deleteCategory()">Delete</button>
+          <button class="btn btn-default" (click)="closeDialog()">Close</button>
+        </div>
+      </div>
+    </div>
+</div>  
+</main>
